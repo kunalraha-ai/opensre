@@ -3,6 +3,17 @@ from __future__ import annotations
 from app import llm_credentials
 
 
+def test_resolve_env_credential_prefers_env_over_keyring(monkeypatch) -> None:
+    monkeypatch.setenv("GITLAB_ACCESS_TOKEN", "from-env")
+    monkeypatch.delenv("OPENSRE_DISABLE_KEYRING", raising=False)
+    monkeypatch.setenv("PYTHON_KEYRING_BACKEND", "tests.shared.keyring_backend.MemoryKeyring")
+
+    from app.llm_credentials import resolve_env_credential, save_llm_api_key
+
+    save_llm_api_key("GITLAB_ACCESS_TOKEN", "from-keyring")
+    assert resolve_env_credential("GITLAB_ACCESS_TOKEN") == "from-env"
+
+
 def test_get_keyring_setup_instructions_for_linux_without_gnome_keyring(monkeypatch) -> None:
     backend_class = type("Keyring", (), {})
     backend_class.__module__ = "keyring.backends.fail"
