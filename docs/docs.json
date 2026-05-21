@@ -131,7 +131,8 @@
               "messaging/slack",
               "messaging/discord",
               "messaging/telegram",
-              "messaging/whatsapp"
+              "messaging/whatsapp",
+              "messaging/twilio"
             ]
           },
           {
