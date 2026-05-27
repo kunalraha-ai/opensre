@@ -36,8 +36,22 @@ _ALL_SCENARIOS = load_all_scenarios()
 _LLM_ATTEMPTS = 2
 
 # Difficulty threshold above which the LLM is expected to struggle.
-# Failures at or above this difficulty are the gap signal —
-# they should not gate CI (strict=False xfail).
+#
+# Root-cause explanation (see GitHub issue #2599):
+# These are NOT infrastructure-dependent or randomly flaky tests.
+# Scenarios at difficulty >= _XFAIL_DIFFICULTY require the LLM to perform
+# multi-hop reasoning across adversarial SelectiveGrafanaBackend responses.
+# Current LLMs fail these at a predictable rate — that failure rate is the
+# benchmark gap signal this suite was designed to measure.
+#
+# xfail(strict=False) is therefore intentional:
+#   - Failures keep CI green (expected, part of the gap metric).
+#   - Passes are recorded as xpass bonuses when the model improves.
+#   - Once a difficulty tier passes reliably, raise _XFAIL_DIFFICULTY or
+#     remove the mark for that tier to enforce the regression gate.
+#
+# make test-cov excludes tests/synthetic entirely (--ignore=tests/synthetic)
+# so these marks have no impact on coverage CI.
 _XFAIL_DIFFICULTY = 3
 
 
