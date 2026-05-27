@@ -1,5 +1,10 @@
 # Test Specification Principles
 
+> **Audience:** This file covers **e2e RCA test principles** — how to write end-to-end
+> investigation tests against real infrastructure under `tests/e2e/`. It is **not**
+> the guide for unit test conventions, pytest markers, or test placement rules.
+> For those, see the Rules section in repo-root `AGENTS.md`.
+
 ## 1. Separation of Concerns: Pure Business Logic
 **Principle:** Pipeline business logic (`use_case.py`) must be completely isolated from test orchestration and observability code.
 

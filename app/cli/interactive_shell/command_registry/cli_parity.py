@@ -59,6 +59,11 @@ def run_cli_command(
     must leave this ``False`` so the child's prompts stay attached to the real
     TTY. Capture is also enabled automatically whenever a timeout is set.
 
+    ``capture_output`` forces stdout/stderr to be captured and replayed through
+    ``console`` even without a timeout. Use this for non-interactive subcommands
+    (e.g. ``/guardrails``) so their help text appears inside the REPL buffer
+    instead of bypassing it via the child's inherited stdout FD.
+
     Ctrl+C sends :exc:`KeyboardInterrupt`, which subclasses :exc:`BaseException`
     rather than :exc:`Exception`; it is handled here so the REPL survives and the
     child process exits on SIGINT alongside the interrupted ``run`` call.
